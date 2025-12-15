@@ -1,6 +1,6 @@
 com\parking\sensor\grpc\ParkingSensorServiceGrpc$MethodHandlers.class
-com\parking\core\service\SoapClientService$CityServicePortType.class
 com\parking\sensor\grpc\ParkingSensorServiceGrpc$2.class
+com\parking\core\soapclient\CityZoneService.class
 com\parking\sensor\grpc\ParkingSensorServiceGrpc$AsyncService.class
 com\parking\sensor\grpc\ParkingSensorServiceGrpc$ParkingSensorServiceFutureStub.class
 com\parking\sensor\grpc\SpotUpdate$Builder.class
@@ -23,6 +23,7 @@ com\parking\core\service\ParkingService.class
 com\parking\core\service\GrpcClientService$1.class
 com\parking\sensor\grpc\ParkingSensorServiceGrpc$1.class
 com\parking\sensor\grpc\SpotUpdate.class
+com\parking\core\soapclient\CityZoneService_Service.class
 com\parking\core\CoreServiceApplication.class
 com\parking\sensor\grpc\SensorRequest$1.class
 com\parking\core\service\GrpcClientService.class

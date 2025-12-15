@@ -377,7 +377,7 @@
                 const requestBody = {
                     spotId: spotId,
                     userId: "testUser", // tymczasowo, później z autoryzacji
-                    zone: "2"           // przykład strefy
+                    zone: spotId.toString()           // przykład strefy
                 };
 
                 const response = await fetch(`${API_URL}/spots/reserve`, {

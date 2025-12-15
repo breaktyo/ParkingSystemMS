@@ -11,18 +11,26 @@ public class ReservationListener {
     private static final Logger logger = LoggerFactory.getLogger(ReservationListener.class);
     
     @RabbitListener(queues = "parking.reservations")
-    public void processReservation(String message) {
+    public void processReservation(ReservationRequest request) {
         try {
-            logger.info("Otrzymano rezerwację: {}", message);
+            logger.info(
+                "Otrzymano rezerwację: spotId={}, userId={}, zone={}",
+                request.getSpotId(),
+                request.getUserId(),
+                request.getZone()
+            );
             
             // Symulacja przetwarzania
             Thread.sleep(2000);
             
             // Wyciągnięcie numeru miejsca z komunikatu (zakładając format JSON lub prosty tekst)
-            String parkingSpot = extractParkingSpot(message);
+            //String parkingSpot = extractParkingSpot(message);
             
-            System.out.println(" [x] Przetworzono rezerwację dla miejsca " + parkingSpot + ". Potwierdzenie wysłane.");
-            logger.info("Rezerwacja dla miejsca {} została przetworzona pomyślnie", parkingSpot);
+            System.out.println(" [x] Przetworzono rezerwację dla miejsca {}. Potwierdzenie wysłane.", request.getSpotId());
+            logger.info(
+                "Rezerwacja miejsca {} zakończona sukcesem",
+                request.getSpotId()
+            );
             
         } catch (InterruptedException e) {
             logger.error("Błąd podczas przetwarzania rezerwacji", e);

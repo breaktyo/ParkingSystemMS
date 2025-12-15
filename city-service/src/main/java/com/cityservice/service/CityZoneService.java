@@ -13,5 +13,5 @@ import jakarta.jws.soap.SOAPBinding;
 public interface CityZoneService {
     
     @WebMethod
-    boolean checkZoneValidity(@WebParam(name = "spotId") String spotId);
+    boolean checkZoneValidity(@WebParam(name = "spotId") int spotId);
 }

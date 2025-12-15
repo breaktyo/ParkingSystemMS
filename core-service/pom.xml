@@ -75,11 +75,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web-services</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.sun.xml.ws</groupId>
-            <artifactId>jaxws-rt</artifactId>
-            <version>4.0.1</version>
-        </dependency>
 
         <!-- Lombok -->
         <dependency>
@@ -87,6 +82,24 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>jakarta.xml.ws</groupId>
+            <artifactId>jakarta.xml.ws-api</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-rt</artifactId>
+            <version>4.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+
+
+
     </dependencies>
 
     <dependencyManagement>
@@ -153,6 +166,28 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>com.sun.xml.ws</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId>
+                <version>4.0.2</version>
+                <executions>
+                    <execution>
+                        <id>generate-soap-client</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <wsdlUrls>
+                        <wsdlUrl>http://localhost:8081/ws/city?wsdl</wsdlUrl>
+                    </wsdlUrls>
+                    <packageName>com.parking.core.soapclient</packageName>
+                    <keep>true</keep>
+                    <sourceDestDir>${project.build.directory}/generated-sources/wsimport</sourceDestDir>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 </project>
