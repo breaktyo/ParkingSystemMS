@@ -1,0 +1,3 @@
+com\parking\workerservice\listener\ReservationListener.class
+com\parking\workerservice\WorkerServiceApplication.class
+com\parking\workerservice\config\RabbitMQConfig.class

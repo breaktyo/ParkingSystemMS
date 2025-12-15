@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Parkingowy - Monitoring</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .status-bar {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.connected {
+            background: #10b981;
+        }
+
+        .status-dot.error {
+            background: #ef4444;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .stats {
+            display: flex;
+            gap: 15px;
+            margin-left: auto;
+        }
+
+        .stat {
+            background: #f3f4f6;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .stat.free {
+            color: #10b981;
+        }
+
+        .stat.occupied {
+            color: #ef4444;
+        }
+
+        .parking-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .spot-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .spot-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: currentColor;
+        }
+
+        .spot-card.free {
+            color: #10b981;
+            border: 2px solid #10b981;
+        }
+
+        .spot-card.occupied {
+            color: #ef4444;
+            border: 2px solid #ef4444;
+        }
+
+        .spot-card.free:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3);
+        }
+
+        .spot-card.occupied:hover {
+            transform: translateY(-2px);
+        }
+
+        .spot-id {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .spot-status {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .spot-icon {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 32px;
+            opacity: 0.2;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ef4444;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: white;
+            padding: 16px 24px;
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            max-width: 300px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-left: 4px solid #10b981;
+        }
+
+        .toast.error {
+            border-left: 4px solid #ef4444;
+        }
+
+        @media (max-width: 768px) {
+            .parking-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 15px;
+            }
+
+            .stats {
+                margin-left: 0;
+                margin-top: 10px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🅿️ System Monitoringu Parkingu</h1>
+            <div class="status-bar">
+                <div class="status-item">
+                    <div class="status-dot connected" id="connectionStatus"></div>
+                    <span id="connectionText">Połączono</span>
+                </div>
+                <div class="status-item">
+                    <span>Ostatnia aktualizacja: <strong id="lastUpdate">-</strong></span>
+                </div>
+                <div class="stats">
+                    <div class="stat free">
+                        Wolne: <span id="freeCount">0</span>
+                    </div>
+                    <div class="stat occupied">
+                        Zajęte: <span id="occupiedCount">0</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div id="errorContainer"></div>
+        
+        <div id="content">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Ładowanie danych parkingu...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const API_URL = 'http://localhost:8080';
+        const REFRESH_INTERVAL = 1000;
+        let intervalId = null;
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function updateConnectionStatus(connected) {
+            const statusDot = document.getElementById('connectionStatus');
+            const statusText = document.getElementById('connectionText');
+            
+            if (connected) {
+                statusDot.className = 'status-dot connected';
+                statusText.textContent = 'Połączono';
+            } else {
+                statusDot.className = 'status-dot error';
+                statusText.textContent = 'Błąd połączenia';
+            }
+        }
+
+        function showError(message) {
+            const errorContainer = document.getElementById('errorContainer');
+            errorContainer.innerHTML = `
+                <div class="error-message">
+                    <strong>Błąd:</strong> ${message}
+                </div>
+            `;
+            updateConnectionStatus(false);
+        }
+
+        function clearError() {
+            document.getElementById('errorContainer').innerHTML = '';
+        }
+
+        async function fetchSpots() {
+            try {
+                const response = await fetch(`${API_URL}/spots`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                const spots = data._embedded ? data._embedded.parkingSpotList : [];
+                renderSpots(spots);
+                clearError();
+                updateConnectionStatus(true);
+                
+                const now = new Date();
+                document.getElementById('lastUpdate').textContent = now.toLocaleTimeString('pl-PL');
+                
+            } catch (error) {
+                console.error('Błąd pobierania danych:', error);
+                showError(`Nie można pobrać danych z serwera: ${error.message}`);
+            }
+        }
+
+        function renderSpots(spots) {
+            const content = document.getElementById('content');
+            
+            if (!Array.isArray(spots) || spots.length === 0) {
+                content.innerHTML = '<div class="loading"><p>Brak dostępnych miejsc parkingowych</p></div>';
+                return;
+            }
+
+            const freeSpots = spots.filter(s => s.status === 'AVAILABLE').length;
+            const occupiedSpots = spots.filter(s => s.status === 'OCCUPIED').length;
+            
+            document.getElementById('freeCount').textContent = freeSpots;
+            document.getElementById('occupiedCount').textContent = occupiedSpots;
+
+            const grid = document.createElement('div');
+            grid.className = 'parking-grid';
+
+            spots.forEach(spot => {
+                const isOccupied = spot.status === 'OCCUPIED';
+                const card = document.createElement('div');
+                card.className = `spot-card ${isOccupied ? 'occupied' : 'free'}`;
+                card.innerHTML = `
+                    <div class="spot-id">#${spot.id}</div>
+                    <div class="spot-status">${isOccupied ? 'Zajęte' : 'Wolne'}</div>
+                    <div class="spot-icon">${isOccupied ? '🚗' : '✓'}</div>
+                `;
+                
+                if (!isOccupied) {
+                    card.addEventListener('click', () => reserveSpot(spot.id));
+                }
+                
+                grid.appendChild(card);
+            });
+
+            content.innerHTML = '';
+            content.appendChild(grid);
+        }
+
+
+        async function reserveSpot(spotId) {
+            try {
+                const requestBody = {
+                    spotId: spotId,
+                    userId: "testUser", // tymczasowo, później z autoryzacji
+                    zone: "2"           // przykład strefy
+                };
+
+                const response = await fetch(`${API_URL}/spots/reserve`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                if (!response.ok) {
+                    const error = await response.text();
+                    throw new Error(error || `HTTP ${response.status}`);
+                }
+
+                showToast(`Miejsce #${spotId} zostało zarezerwowane!`, 'success');
+                await fetchSpots();
+                
+            } catch (error) {
+                console.error('Błąd rezerwacji:', error);
+                showToast(`Nie można zarezerwować miejsca: ${error.message}`, 'error');
+            }
+        }
+
+        function startPolling() {
+            fetchSpots();
+            intervalId = setInterval(fetchSpots, REFRESH_INTERVAL);
+        }
+
+        function stopPolling() {
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+        }
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                stopPolling();
+            } else {
+                startPolling();
+            }
+        });
+
+        window.addEventListener('load', startPolling);
+        window.addEventListener('beforeunload', stopPolling);
+    </script>
+</body>
+</html>

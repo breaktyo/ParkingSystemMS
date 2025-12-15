@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  city-service:
+    build: .
+    ports:
+      - "8081:8081"
+    container_name: city-service
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8081/ws/city?wsdl"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 40s

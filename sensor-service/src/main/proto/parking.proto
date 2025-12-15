@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.parking.sensor.grpc";
+option java_outer_classname = "ParkingProto";
+
+package parking;
+
+service ParkingSensorService {
+  rpc streamSpotStatus(SensorRequest) returns (stream SpotUpdate);
+}
+
+message SensorRequest {
+  string sensorId = 1;
+}
+
+message SpotUpdate {
+  int32 spotId = 1;
+  bool isOccupied = 2;
+}

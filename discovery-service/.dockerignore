@@ -1,0 +1,13 @@
+target/
+.mvn/
+*.class
+*.log
+*.jar
+*.war
+*.nar
+.git/
+.gitignore
+.idea/
+*.iml
+.vscode/
+README.md

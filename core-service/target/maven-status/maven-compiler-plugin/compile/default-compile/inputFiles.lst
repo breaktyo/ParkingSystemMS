@@ -1,0 +1,15 @@
+C:\Users\break\webowka\RSI\core-service\src\main\java\com\parking\core\config\CorsConfig.java
+C:\Users\break\webowka\RSI\core-service\src\main\java\com\parking\core\controller\ParkingController.java
+C:\Users\break\webowka\RSI\core-service\src\main\java\com\parking\core\config\RabbitMQConfig.java
+C:\Users\break\webowka\RSI\core-service\src\main\java\com\parking\core\model\ParkingSpot.java
+C:\Users\break\webowka\RSI\core-service\src\main\java\com\parking\core\CoreServiceApplication.java
+C:\Users\break\webowka\RSI\core-service\target\generated-sources\protobuf\java\com\parking\sensor\grpc\ParkingProto.java
+C:\Users\break\webowka\RSI\core-service\target\generated-sources\protobuf\java\com\parking\sensor\grpc\SpotUpdate.java
+C:\Users\break\webowka\RSI\core-service\src\main\java\com\parking\core\service\GrpcClientService.java
+C:\Users\break\webowka\RSI\core-service\target\generated-sources\protobuf\java\com\parking\sensor\grpc\SensorRequest.java
+C:\Users\break\webowka\RSI\core-service\target\generated-sources\protobuf\java\com\parking\sensor\grpc\SensorRequestOrBuilder.java
+C:\Users\break\webowka\RSI\core-service\src\main\java\com\parking\core\service\ParkingService.java
+C:\Users\break\webowka\RSI\core-service\target\generated-sources\protobuf\java\com\parking\sensor\grpc\SpotUpdateOrBuilder.java
+C:\Users\break\webowka\RSI\core-service\target\generated-sources\protobuf\grpc-java\com\parking\sensor\grpc\ParkingSensorServiceGrpc.java
+C:\Users\break\webowka\RSI\core-service\src\main\java\com\parking\core\model\ReservationRequest.java
+C:\Users\break\webowka\RSI\core-service\src\main\java\com\parking\core\service\SoapClientService.java
