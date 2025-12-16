@@ -11,25 +11,20 @@ public class ReservationListener {
     private static final Logger logger = LoggerFactory.getLogger(ReservationListener.class);
     
     @RabbitListener(queues = "parking.reservations")
-    public void processReservation(ReservationRequest request) {
+    public void processReservation(String request) {
         try {
             logger.info(
-                "Otrzymano rezerwację: spotId={}, userId={}, zone={}",
-                request.getSpotId(),
-                request.getUserId(),
-                request.getZone()
+                "Otrzymano rezerwację: {}", request
             );
             
-            // Symulacja przetwarzania
             Thread.sleep(2000);
             
-            // Wyciągnięcie numeru miejsca z komunikatu (zakładając format JSON lub prosty tekst)
-            //String parkingSpot = extractParkingSpot(message);
+        
             
-            System.out.println(" [x] Przetworzono rezerwację dla miejsca {}. Potwierdzenie wysłane.", request.getSpotId());
+            //System.out.println(" [x] Przetworzono rezerwację dla miejsca {}. Potwierdzenie wysłane.", request);
             logger.info(
                 "Rezerwacja miejsca {} zakończona sukcesem",
-                request.getSpotId()
+                request
             );
             
         } catch (InterruptedException e) {
@@ -39,8 +34,6 @@ public class ReservationListener {
     }
     
     private String extractParkingSpot(String message) {
-        // Prosta ekstrakcja - dostosuj do formatu Twoich komunikatów
-        // Jeśli message to JSON: {"parkingSpot": "A12", ...}
         if (message.contains("parkingSpot")) {
             int start = message.indexOf("parkingSpot") + 15;
             int end = message.indexOf("\"", start);

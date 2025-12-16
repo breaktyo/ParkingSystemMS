@@ -3,9 +3,7 @@ package com.cityservice;
 import com.cityservice.service.impl.CityZoneServiceImpl;
 import jakarta.xml.ws.Endpoint;
 
-/**
- * Główna klasa uruchamiająca SOAP Web Service
- */
+
 public class CityServiceApplication {
     
     private static final String SERVICE_URL = "http://0.0.0.0:8081/ws/city";
@@ -16,7 +14,6 @@ public class CityServiceApplication {
         System.out.println("===========================================");
         
         try {
-            // Publikacja Web Service
             CityZoneServiceImpl implementor = new CityZoneServiceImpl();
             Endpoint endpoint = Endpoint.publish(SERVICE_URL, implementor);
             
@@ -27,7 +24,6 @@ public class CityServiceApplication {
             System.out.println("✓ Aby zatrzymać serwis, naciśnij Ctrl+C");
             System.out.println("===========================================\n");
             
-            // Utrzymanie procesu
             Thread.currentThread().join();
             
         } catch (InterruptedException e) {

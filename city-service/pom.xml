@@ -21,14 +21,12 @@
     </properties>
 
     <dependencies>
-        <!-- Jakarta XML Web Services (JAX-WS) dla Java 17 -->
         <dependency>
             <groupId>com.sun.xml.ws</groupId>
             <artifactId>jaxws-rt</artifactId>
             <version>${jaxws.version}</version>
         </dependency>
         
-        <!-- Jakarta XML Binding (potrzebne dla JAX-WS) -->
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
@@ -49,7 +47,6 @@
                 </configuration>
             </plugin>
 
-            <!-- Maven Shade Plugin - tworzenie fat JAR -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>

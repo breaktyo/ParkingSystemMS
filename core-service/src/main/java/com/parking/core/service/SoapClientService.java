@@ -1,6 +1,6 @@
 package com.parking.core.service;
 
-import com.parking.core.soapclient.CityZoneService_Service; // the Service class
+import com.parking.core.soapclient.CityZoneService_Service;
 import com.parking.core.soapclient.CityZoneService;     
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +18,6 @@ public class SoapClientService {
 
     public boolean checkZoneValidity(String zone) {
         try {
-            // Use the generated Service class directly
             int zoneId = Integer.parseInt(zone);
             URL wsdlUrl = new URL(cityServiceUrl + "?wsdl");
             QName serviceName = new QName("http://service.cityservice.com/", "CityZoneService");

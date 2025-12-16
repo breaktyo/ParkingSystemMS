@@ -21,15 +21,11 @@ public class SensorServiceImpl extends ParkingSensorServiceGrpc.ParkingSensorSer
         logger.info("Starting spot status stream for sensor: " + request.getSensorId());
         
         try {
-            // Symulacja ciągłego streamingu danych
             while (true) {
-                // Generowanie losowego ID miejsca (1-10)
                 int spotId = MIN_SPOT_ID + random.nextInt(MAX_SPOT_ID);
                 
-                // Generowanie losowego statusu (zajęte/wolne)
                 boolean isOccupied = random.nextBoolean();
                 
-                // Tworzenie i wysyłanie update'u
                 SpotUpdate update = SpotUpdate.newBuilder()
                         .setSpotId(spotId)
                         .setIsOccupied(isOccupied)
@@ -39,7 +35,6 @@ public class SensorServiceImpl extends ParkingSensorServiceGrpc.ParkingSensorSer
                 logger.info(String.format("Sent update: Spot %d is %s", 
                         spotId, isOccupied ? "OCCUPIED" : "FREE"));
                 
-                // Czekanie 2 sekundy przed następnym update'm
                 Thread.sleep(STREAM_INTERVAL_MS);
             }
         } catch (InterruptedException e) {
@@ -51,7 +46,6 @@ public class SensorServiceImpl extends ParkingSensorServiceGrpc.ParkingSensorSer
             return;
         }
         
-        // W normalnym przepływie nie dojdziemy tutaj, ale gdyby stream się zakończył:
         responseObserver.onCompleted();
     }
 }

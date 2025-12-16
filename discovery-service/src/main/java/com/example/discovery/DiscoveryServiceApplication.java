@@ -4,10 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
-/**
- * Discovery Service - Eureka Server
- * Centralny serwis do rejestracji i wykrywania mikrousług
- */
+
 @SpringBootApplication
 @EnableEurekaServer
 public class DiscoveryServiceApplication {

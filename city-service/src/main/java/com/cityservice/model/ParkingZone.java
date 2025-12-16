@@ -1,8 +1,5 @@
 package com.cityservice.model;
 
-/**
- * Model reprezentujący strefę parkingową
- */
 public class ParkingZone {
     private int id;
     private String nazwa;

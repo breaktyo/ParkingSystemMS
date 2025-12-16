@@ -5,9 +5,7 @@ import jakarta.jws.WebParam;
 import jakarta.jws.WebService;
 import jakarta.jws.soap.SOAPBinding;
 
-/**
- * Interfejs Web Service dla rejestru stref parkingowych
- */
+
 @WebService(name = "CityZoneService", targetNamespace = "http://service.cityservice.com/")
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public interface CityZoneService {

@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ParkingSpot {
     private Long id;
-    private String status; // AVAILABLE, OCCUPIED
+    private String status;
 }

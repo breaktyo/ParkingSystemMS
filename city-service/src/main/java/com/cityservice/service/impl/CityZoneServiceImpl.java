@@ -17,7 +17,6 @@ public class CityZoneServiceImpl implements CityZoneService {
     
     @Override
     public boolean checkZoneValidity(int spotId) {
-        // Symulacja: parzyste ID są legalne, nieparzyste nie
         boolean isValid = (spotId % 2 == 0);
         
         System.out.println("Sprawdzono strefę ID: " + spotId + 
